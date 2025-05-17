@@ -15,16 +15,13 @@ class CabSpider(scrapy.Spider):
         for row in rows:
             item = CabMinutesItem()
             date_raw = row.xpath('text()').get()
-            date = parser.parse(date_raw).strftime('%Y-%m-%d')
-            title = date_raw + " " + row.xpath('//h1[@class="documentFirstHeading"]//text()').get()
-            category = date_raw.split()[-1] if date_raw.lower() == 'minutes' else 'other'
-            doc_link = row.xpath('@href').get()
 
-            print(date)
-            print(title)
-            print(category)
-            print(doc_link)
-            input("__________________________________________")
+            words = date_raw.split()
+            date_part = " ".join(words[:-1]) if not words[-1].isnumeric() else date_raw
+            item['date'] = parser.parse(date_part).strftime('%Y-%m-%d')
+            item['meeting_title'] = date_raw + " " + row.xpath('//h1[@class="documentFirstHeading"]//text()').get()
+            item['category'] = "other" if not words[-1].isnumeric() else "minutes"
+            item['url'] = row.xpath('@href').get()
 
             yield item
 

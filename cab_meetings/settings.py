@@ -97,3 +97,4 @@ ROBOTSTXT_OBEY = True
 
 # Set settings whose default value is deprecated to a future-proof value
 FEED_EXPORT_ENCODING = "utf-8"
+FEED_EXPORT_FIELDS = ["date", "meeting_title", "category", "url"]
